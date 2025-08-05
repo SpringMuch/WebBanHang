@@ -13,6 +13,8 @@ spec:
       labels:
         app: webbanhang-db
     spec:
+      securityContext:
+        fsGroup: 0
       containers:
       - name: mssql
         image: mcr.microsoft.com/mssql/server:2022-latest
