@@ -1,0 +1,11 @@
+# File: minio-backend-config.yml
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: minio-health-check
+spec:
+  healthCheck:
+    # MinIO API sẵn sàng trả lời trên đường dẫn này để kiểm tra
+    requestPath: /minio/health/live
+    port: 9000
+    type: HTTP

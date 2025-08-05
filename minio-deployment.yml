@@ -68,6 +68,8 @@ kind: Service
 metadata:
   # Đổi tên để tránh xung đột và dễ nhận biết
   name: minio-loadbalancer 
+  annotations:
+    cloud.google.com/backend-config: '{"default": "minio-health-check"}'
 spec:
   type: NodePort
   selector:
