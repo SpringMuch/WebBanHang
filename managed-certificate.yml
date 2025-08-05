@@ -1,0 +1,7 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: webbanhang-cert
+spec:
+  domains:
+    - baitaplon.id.vn

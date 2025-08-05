@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webbanhang-ingress
+  annotations:
+    # Chỉ định IP tĩnh đã đặt trước ở Bước 1
+    kubernetes.io/ingress.global-static-ip-name: "webbanhang-ip"
+    # Chỉ định chứng chỉ SSL đã tạo ở trên
+    networking.gke.io/managed-certificates: "webbanhang-cert"
+    # (Tùy chọn nhưng khuyến khích) Bắt buộc chuyển hướng từ HTTP sang HTTPS
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  rules:
+  - host: baitaplon.id.vn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # Trỏ đến service của ứng dụng
+            name: webbanhang-app-service 
+            port:
+              # Trỏ đến cổng http (83) của service
+              number: 83

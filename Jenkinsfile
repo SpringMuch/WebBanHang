@@ -83,9 +83,11 @@ pipeline {
                         echo "--- Deploying to GKE cluster ---"
                         bat 'kubectl apply -f secret.yml'
                         bat 'kubectl apply -f tls-certificate.yml'
+			bat 'kubectl apply -f managed-certificate.yml'
                         bat 'kubectl apply -f db-deployment.yml'
                         bat 'kubectl apply -f minio-deployment.yml'
                         bat 'kubectl apply -f app-deployment.yml'
+			bat 'kubectl apply -f ingress.yml'
 
                         bat "kubectl set image deployment/webbanhang-app webbanhang-app=${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                     }
