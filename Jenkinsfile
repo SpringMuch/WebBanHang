@@ -66,17 +66,29 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig(credentialsId: KUBECONFIG_CREDENTIAL_ID) {
-                    bat 'kubectl apply -f secret.yml'
-		    bat 'kubectl apply -f tls-certificate.yml'
-                    bat 'kubectl apply -f db-deployment.yml'
-                    bat 'kubectl apply -f minio-deployment.yml'
+                // Sử dụng credential Google Service Account đã tạo
+                withCredentials([googleServiceAccount(credentialsId: 'gke-service-account')]) {
+                    script {
+                        def gkeProject = 'web-ban-hang-online-468113'
+                        def gkeZone = 'asia-southeast1-a'
+                        def gkeCluster = 'web-ban-hang-cluster'
 
-                    bat 'kubectl apply -f app-deployment.yml'
+                        echo "--- Authenticating with GKE ---"
+                        bat "gcloud auth activate-service-account --key-file=%GCLOUD_SERVICE_ACCOUNT_KEYFILE%"
+                        
+                        bat "gcloud config set project ${gkeProject}"
 
-                    bat "kubectl set image deployment/webbanhang-app webbanhang-app=${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
-                    
-                    
+                        bat "gcloud container clusters get-credentials ${gkeCluster} --zone ${gkeZone}"
+
+                        echo "--- Deploying to GKE cluster ---"
+                        bat 'kubectl apply -f secret.yml'
+                        bat 'kubectl apply -f tls-certificate.yml'
+                        bat 'kubectl apply -f db-deployment.yml'
+                        bat 'kubectl apply -f minio-deployment.yml'
+                        bat 'kubectl apply -f app-deployment.yml'
+
+                        bat "kubectl set image deployment/webbanhang-app webbanhang-app=${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    }
                 }
             }
         }
