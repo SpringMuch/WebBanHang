@@ -69,7 +69,7 @@ metadata:
   # Đổi tên để tránh xung đột và dễ nhận biết
   name: minio-loadbalancer 
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: minio
   ports:

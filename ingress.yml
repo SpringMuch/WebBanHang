@@ -23,3 +23,13 @@ spec:
             port:
               # Trỏ đến cổng http (83) của service
               number: 83
+  - host: minio.baitaplon.id.vn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: minio-loadbalancer 
+            port:
+              number: 9000

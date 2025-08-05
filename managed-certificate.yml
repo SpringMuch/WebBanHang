@@ -5,3 +5,4 @@ metadata:
 spec:
   domains:
     - baitaplon.id.vn
+    - minio.baitaplon.id.vn
