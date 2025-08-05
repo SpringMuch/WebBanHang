@@ -66,15 +66,15 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                // Sử dụng credential Google Service Account đã tạo
-                withCredentials([googleServiceAccount(credentialsId: 'gke-service-account')]) {
+
+                withCredentials([file(credentialsId: 'gke-sa-json-key', variable: 'GCLOUD_KEYFILE_PATH')]) {
                     script {
                         def gkeProject = 'web-ban-hang-online-468113'
                         def gkeZone = 'asia-southeast1-a'
                         def gkeCluster = 'web-ban-hang-cluster'
 
-                        echo "--- Authenticating with GKE ---"
-                        bat "gcloud auth activate-service-account --key-file=%GCLOUD_SERVICE_ACCOUNT_KEYFILE%"
+                        echo "--- Authenticating with GKE using Secret File ---"
+                        bat "gcloud auth activate-service-account --key-file=\"%GCLOUD_KEYFILE_PATH%\""
                         
                         bat "gcloud config set project ${gkeProject}"
 
