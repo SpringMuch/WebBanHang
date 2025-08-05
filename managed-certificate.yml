@@ -6,3 +6,4 @@ spec:
   domains:
     - baitaplon.id.vn
     - minio.baitaplon.id.vn
+    - minio-console.baitaplon.id.vn
