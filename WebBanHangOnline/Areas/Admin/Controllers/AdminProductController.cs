@@ -204,9 +204,16 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                     .WithContentType(imageFile.ContentType)
             );
 
-            // 3. Trả về URL của ảnh
-            var publicEndpoint = _configuration["Minio:PublicEndpoint"] ?? "localhost:9000";
-            return $"http://{publicEndpoint}/{bucketName}/{objectName}";
+            // 3. Trả về URL của ảnh (ĐÃ SỬA LẠI)
+            var publicEndpoint = _configuration["Minio:PublicEndpoint"];
+            if (string.IsNullOrEmpty(publicEndpoint))
+            {
+                // Fallback an toàn cho môi trường dev
+                publicEndpoint = "http://localhost:9010";
+            }
+
+            // SỬA LỖI: Trả về URL hoàn chỉnh, không thêm http:// nữa
+            return $"{publicEndpoint}/{bucketName}/{objectName}";
         }
 
         private async Task DeleteImage(string imageUrl)
