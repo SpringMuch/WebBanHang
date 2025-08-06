@@ -156,10 +156,6 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // =================================================================
-        // HÀM XỬ LÝ ẢNH ĐÃ ĐƯỢC CẬP NHẬT ĐỂ TỰ ĐỘNG SET POLICY
-        // =================================================================
-
         private async Task<string> SaveImageAndSetPolicy(IFormFile imageFile)
         {
             var bucketName = "products";
@@ -204,15 +200,12 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                     .WithContentType(imageFile.ContentType)
             );
 
-            // 3. Trả về URL của ảnh (ĐÃ SỬA LẠI)
             var publicEndpoint = _configuration["Minio:PublicEndpoint"];
             if (string.IsNullOrEmpty(publicEndpoint))
             {
-                // Fallback an toàn cho môi trường dev
                 publicEndpoint = "http://localhost:9010";
             }
 
-            // SỬA LỖI: Trả về URL hoàn chỉnh, không thêm http:// nữa
             return $"{publicEndpoint}/{bucketName}/{objectName}";
         }
 
